@@ -1,0 +1,11 @@
+# Buildroot generated output (gigabytes, fully reproducible)
+buildroot/output/
+buildroot/dl/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+*.swo
