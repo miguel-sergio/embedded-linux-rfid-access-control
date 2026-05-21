@@ -1,0 +1,20 @@
+{
+  "name": "Buildroot Build Environment",
+  "image": "debian:bookworm",
+  "onCreateCommand": "apt-get update && apt-get install -y build-essential libncurses-dev git wget cpio python3 python3-dev rsync bc file unzip diffutils",
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "mounts": [
+    "source=${localWorkspaceFolder}/buildroot/dl,target=/workspace/buildroot/dl,type=bind,consistency=cached",
+    "source=rfid-buildroot-output,target=/build,type=volume"
+  ],
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.makefile-tools"
+      ]
+    }
+  }
+}
