@@ -1,20 +1,28 @@
 {
   "name": "Buildroot Build Environment",
-  "image": "debian:bookworm",
-  "onCreateCommand": "apt-get update && apt-get install -y build-essential libncurses-dev git wget cpio python3 python3-dev rsync bc file unzip diffutils",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "workspaceFolder": "/workspace",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "mounts": [
-    "source=${localWorkspaceFolder}/buildroot/dl,target=/workspace/buildroot/dl,type=bind,consistency=cached",
-    "source=rfid-buildroot-output,target=/build,type=volume"
+    "source=${localWorkspaceFolder}/../dl,target=/dl,type=bind,consistency=cached",
+    "source=rfid-buildroot,target=/workspace/buildroot,type=volume"
   ],
-  "remoteUser": "root",
+  "remoteEnv": {
+    "BR2_DL_DIR": "/dl"
+  },
+  "postCreateCommand": "if [ ! -f /workspace/buildroot/Makefile ]; then git -C /workspace submodule update --init; fi && sudo chown -R buildroot-user:buildroot-user /workspace/buildroot",
+  "remoteUser": "buildroot-user",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-vscode.cpptools",
         "ms-vscode.makefile-tools"
-      ]
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
     }
   }
 }

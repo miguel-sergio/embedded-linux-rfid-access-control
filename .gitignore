@@ -1,6 +1,12 @@
 # Buildroot generated output (gigabytes, fully reproducible)
 buildroot/output/
+
+# Buildroot downloads (managed separately)
 buildroot/dl/
+
+# Buildroot config (generated, not custom)
+buildroot/.config
+buildroot/.config.old
 
 # Build artifacts
 *.img
