@@ -1,0 +1,2 @@
+source "$BR2_EXTERNAL_RFID_ACCESS_PATH/package/drivers/rc522/Config.in"
+source "$BR2_EXTERNAL_RFID_ACCESS_PATH/package/apps/rfid-access/Config.in"

@@ -28,3 +28,4 @@ dtoverlay=miniuart-bt
 # enable 64bits support
 arm_64bit=1
 dtoverlay=spi0-1cs
+dtoverlay=rc522-overlay

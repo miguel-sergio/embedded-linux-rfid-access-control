@@ -1,0 +1,5 @@
+config BR2_PACKAGE_RC522
+	bool "rc522"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Linux SPI driver for the MFRC522 RFID reader.

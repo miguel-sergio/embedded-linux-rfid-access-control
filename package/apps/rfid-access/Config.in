@@ -1,0 +1,4 @@
+config BR2_PACKAGE_RFID_ACCESS
+	bool "rfid-access"
+	help
+	  User space access control application for RFID cards.

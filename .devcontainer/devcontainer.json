@@ -10,7 +10,8 @@
     "source=rfid-buildroot,target=/workspace/buildroot,type=volume"
   ],
   "remoteEnv": {
-    "BR2_DL_DIR": "/dl"
+    "BR2_DL_DIR": "/dl",
+    "BR2_EXTERNAL": "/workspace"
   },
   "postCreateCommand": "if [ ! -f /workspace/buildroot/Makefile ]; then git -C /workspace submodule update --init; fi && sudo chown -R buildroot-user:buildroot-user /workspace/buildroot",
   "remoteUser": "buildroot-user",
