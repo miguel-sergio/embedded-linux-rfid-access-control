@@ -15,18 +15,19 @@
 static void log_access(const char *uid, int granted)
 {
 	FILE *log;
-	time_t now;
-	char timestamp[32];
+	struct timespec ts;
+	long h, m, s;
 
-	time(&now);
-	strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S",
-		 localtime(&now));
+	clock_gettime(CLOCK_BOOTTIME, &ts);
+	h = ts.tv_sec / 3600;
+	m = (ts.tv_sec % 3600) / 60;
+	s = ts.tv_sec % 60;
 
 	log = fopen(LOG_FILE, "a");
 	if (!log)
 		return;
 
-	fprintf(log, "%s UID=%s %s\n", timestamp, uid,
+	fprintf(log, "[%02ld:%02ld:%02ld] UID=%s %s\n", h, m, s, uid,
 		granted ? "ACCEPTED" : "REJECTED");
 	fclose(log);
 }
@@ -59,8 +60,8 @@ int main(void)
 	char last_uid[UID_LEN] = { 0 };
 	ssize_t n;
 	int granted;
-	time_t last_seen = 0;
-	time_t now;
+	struct timespec last_seen = { 0, 0 };
+	struct timespec now;
 
 	printf("RFID Access Control - starting\n");
 
@@ -94,8 +95,9 @@ int main(void)
 		 * Debounce: skip if the same UID was already processed within
 		 * DEBOUNCE_S seconds (card held on reader).
 		 */
-		now = time(NULL);
-		if (strcmp(uid, last_uid) == 0 && (now - last_seen) < DEBOUNCE_S)
+		clock_gettime(CLOCK_BOOTTIME, &now);
+		if (strcmp(uid, last_uid) == 0 &&
+		    (now.tv_sec - last_seen.tv_sec) < DEBOUNCE_S)
 			continue;
 
 		strncpy(last_uid, uid, sizeof(last_uid) - 1);
